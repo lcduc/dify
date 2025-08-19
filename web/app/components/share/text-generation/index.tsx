@@ -35,10 +35,8 @@ import Toast from '@/app/components/base/toast'
 import type { VisionFile, VisionSettings } from '@/types/app'
 import { Resolution, TransferMethod } from '@/types/app'
 import { useAppFavicon } from '@/hooks/use-app-favicon'
-import DifyLogo from '@/app/components/base/logo/dify-logo'
 import cn from '@/utils/classnames'
 import { AccessMode } from '@/models/access-control'
-import { useGlobalPublicStore } from '@/context/global-public-context'
 import useDocumentTitle from '@/hooks/use-document-title'
 import { useWebAppStore } from '@/context/web-app-context'
 
@@ -90,7 +88,6 @@ const TextGeneration: FC<IMainProps> = ({
     doSetInputs(newInputs)
     inputsRef.current = newInputs
   }, [])
-  const systemFeatures = useGlobalPublicStore(s => s.systemFeatures)
   const [appId, setAppId] = useState<string>('')
   const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null)
   const [customConfig, setCustomConfig] = useState<Record<string, any> | null>(null)
@@ -583,23 +580,6 @@ const TextGeneration: FC<IMainProps> = ({
             />
           )}
         </div>
-        {/* powered by */}
-        {!customConfig?.remove_webapp_brand && (
-          <div className={cn(
-            'flex shrink-0 items-center gap-1.5 bg-components-panel-bg py-3',
-            isPC ? 'px-8' : 'px-4',
-            !isPC && resultExisted && 'rounded-b-2xl border-b-[0.5px] border-divider-regular',
-          )}>
-            <div className='system-2xs-medium-uppercase text-text-tertiary'>{t('share.chat.poweredBy')}</div>
-            {
-              systemFeatures.branding.enabled && systemFeatures.branding.workspace_logo
-                ? <img src={systemFeatures.branding.workspace_logo} alt='logo' className='block h-5 w-auto' />
-                : customConfig?.replace_webapp_logo
-                  ? <img src={`${customConfig?.replace_webapp_logo}`} alt='logo' className='block h-5 w-auto' />
-                  : <DifyLogo size='small' />
-            }
-          </div>
-        )}
       </div>
       {/* Result */}
       <div className={cn(
